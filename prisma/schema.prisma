@@ -9,5 +9,39 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
+}
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+
+  @@map("users")
+}
+
+model Customer {
+  id        String @id @default(uuid())
+  name      String
+  email     String
+  image_url String
+
+  @@map("customers")
+}
+
+model Invoice {
+  id          String   @id @default(uuid())
+  customer_id String
+  amount      Int
+  status      String
+  date        DateTime
+
+  @@map("invoices")
+}
+
+model Revenue {
+  month   String @id @unique
+  revenue Int
+
+  @@map("revenue")
 }
