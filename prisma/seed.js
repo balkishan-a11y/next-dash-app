@@ -8,10 +8,6 @@ const require = createRequire(import.meta.url);
 const { users, customers, invoices, revenue } =
     require('../app/lib/placeholder-data');
 
-const adapter = new PrismaMariaDb(process.env.DATABASE_URL);
-
-const prisma = new PrismaClient({ adapter });
-
 async function main() {
     console.log('🌱 Start seeding...');
 

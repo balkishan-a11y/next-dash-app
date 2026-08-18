@@ -105,8 +105,8 @@ export async function fetchFilteredInvoices(
       WHERE
         customers.name LIKE ${`%${query}%`} OR
         customers.email LIKE ${`%${query}%`} OR
-        invoices.amount LIKE ${`%${query}%`} OR
-        invoices.date LIKE ${`%${query}%`} OR
+        invoices.amount::text LIKE ${`%${query}%`} OR
+        invoices.date::text LIKE ${`%${query}%`} OR
         invoices.status LIKE ${`%${query}%`}
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
@@ -121,14 +121,14 @@ export async function fetchFilteredInvoices(
 
 export async function fetchInvoicesPages(query: string) {
   try {
-    const data = await prisma.$queryRaw`SELECT COUNT(*)
+    const data = await prisma.$queryRaw`SELECT COUNT(*) as count
     FROM invoices
     JOIN customers ON invoices.customer_id = customers.id
     WHERE
       customers.name LIKE ${`%${query}%`} OR
       customers.email LIKE ${`%${query}%`} OR
-      invoices.amount LIKE ${`%${query}%`} OR
-      invoices.date LIKE ${`%${query}%`} OR
+      invoices.amount::text LIKE ${`%${query}%`} OR
+      invoices.date::text LIKE ${`%${query}%`} OR
       invoices.status LIKE ${`%${query}%`}
   `;
 
