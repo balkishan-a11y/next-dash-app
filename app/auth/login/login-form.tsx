@@ -2,11 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { login } from '@/app/lib/actions';
+import { login } from './actions';
 import { useActionState } from 'react';
 
-const initialState = {
-    error: '',
+const initialState: { error: boolean; message: string } = {
+    error: false,
     message: '',
 };
 

@@ -1,4 +1,6 @@
-import { CustomerField } from '@/app/lib/definitions';
+'use client';
+
+import { CustomerField } from '@/app/dashboard/customers/types';
 import Link from 'next/link';
 import {
   CheckIcon,
@@ -7,7 +9,7 @@ import {
   UserCircleIcon,
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
-import { createInvoice } from '@/app/lib/actions';
+import { createInvoice } from './actions';
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
   return (
@@ -63,7 +65,7 @@ export default function Form({ customers }: { customers: CustomerField[] }) {
           <legend className="mb-2 block text-sm font-medium">
             Set the invoice status
           </legend>
-          <div className="rounded-md border border-gray-200 bg-white px-[14px] py-3">
+          <div className="rounded-md border border-gray-200 bg-white p-3">
             <div className="flex gap-4">
               <div className="flex items-center">
                 <input
