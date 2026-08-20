@@ -6,6 +6,7 @@ import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+
 export async function login(prevState: any, formData: FormData) {
   const email = formData.get('email');
   const password = formData.get('password');
@@ -34,7 +35,7 @@ export async function login(prevState: any, formData: FormData) {
       sameSite: 'lax',
       path: '/',
     });
-    return redirect('/dashboard');
+    return redirect('/dashboard/home');
   }
 }
 
@@ -43,4 +44,25 @@ export async function logout() {
   cookieStore.delete('session');
   revalidatePath('/auth/login');
   redirect('/auth/login');
+}
+
+export async function canAccess(userId: string, path: string) {
+
+  const menu = await prisma.menu.findFirst({
+    where: {
+      path: path,
+      status: '1',
+    },
+  });
+  if (!menu) {
+    return false;
+  }
+  // console.log(userId);
+  const rights = await prisma.userAssignRights.findFirst({
+    where: {
+      user_id: userId,
+      menu_id: String(menu.id),
+    },
+  });
+  return rights ? true : false;
 }

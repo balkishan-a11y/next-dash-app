@@ -54,3 +54,14 @@ export async function fetchUsersPages(query: string): Promise<number> {
     throw new Error('Failed to fetch total number of users.');
   }
 }
+export async function fetchUserById(id: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+    return user;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch user.');
+  }
+}

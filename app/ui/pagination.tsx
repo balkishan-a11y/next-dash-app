@@ -1,6 +1,5 @@
 'use client';
 
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
@@ -110,9 +109,9 @@ function PaginationArrow({
 
   const icon =
     direction === 'left' ? (
-      <ArrowLeftIcon className="w-4" />
+      <i className="fa-solid fa-arrow-left text-sm" />
     ) : (
-      <ArrowRightIcon className="w-4" />
+      <i className="fa-solid fa-arrow-right text-sm" />
     );
 
   return isDisabled ? (

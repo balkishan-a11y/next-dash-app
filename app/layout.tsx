@@ -1,4 +1,5 @@
 import '@/app/ui/global.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import { inter } from '@/app/ui/fonts';
 
 export default function RootLayout({

@@ -1,43 +1,65 @@
-'use client';
-import {
-  UserGroupIcon,
-  HomeIcon,
-  DocumentDuplicateIcon,
-  UserIcon
-} from '@heroicons/react/24/outline';
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-// Map of links to display in the side navigation.
-// Depending on the size of the application, this would be stored in a database.
-const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
-  {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
-  },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Users', href: '/dashboard/users', icon: UserIcon },
+import prisma from '@/app/lib/prisma';
+import LinkList from './link-list';
+import { cookies } from 'next/headers';
+// import { fetchMenus } from '@/app/dashboard/menus/data';
 
-];
+export default async function NavLinks() {
+  // const menus = await fetchMenus();
+  const cookiesStore = await cookies();
+  const user_id = cookiesStore.get('session')?.value;
+  const menu_links = await prisma.userAssignRights.findMany({
+    where: {
+      user_id: user_id,
+    },
+    select: {
+      menu_id: true,
+    }
+  });
+  const menu_ids = menu_links.map((menu_link) => Number(menu_link.menu_id));
+  const menus = await prisma.menu.findMany({
+    where: {
+      id: {
+        in: menu_ids,
+      },
+    },
+  });
+  // console.log(menu_ids);
 
-export default function NavLinks() {
-  const pathname = usePathname();
-  return (
-    <>
-      {links.map((link) => {
-        const LinkIcon = link.icon;
-        return (
-          <Link
-            key={link.name}
-            href={link.href}
-            className={`flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3 ` + (pathname == link.href ? 'bg-sky-100 text-blue-600' : '')}
-          >
-            <LinkIcon className="w-6" />
-            <p className="hidden md:block">{link.name}</p>
-          </Link>
-        );
-      })}
-    </>
-  );
+  let links: any = {};
+  menus.map((value) => {
+    if (value.type == "1") {
+      var name = value.name.replace(" ", "_");
+      links[name] = {
+        id: value.id,
+        label:
+          value.name.charAt(0).toUpperCase() +
+          value.name.slice(1),
+        icon: value.icon,
+        status: value.status,
+        sub_menu: [],
+      }
+    }
+  });
+
+  menus.map((value) => {
+    if (value.type == "0") {
+      links[value.parent_menu].sub_menu.push({
+        id: value.id,
+        label:
+          value.name.charAt(0).toUpperCase() +
+          value.name.slice(1),
+        href:
+          value.name === 'home'
+            ? '/dashboard'
+            : '/dashboard' + value.path,
+
+        icon: value.icon,
+        parent_menu: value.parent_menu,
+        status: value.status,
+      });
+    }
+  });
+  // console.log(menus);
+
+  return <LinkList menu_links={links} />
 }

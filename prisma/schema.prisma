@@ -52,3 +52,23 @@ enum Role {
   ADMIN
   MANAGER
 }
+
+model Menu{
+  id Int @id @default(autoincrement())
+  name String
+  path String
+  icon String
+  parent_menu String
+  status String @default("1") // 1 => Active, 0 => Inactive
+  type String @default("1") // 1=>menu, 2=>sub_menu
+  @@map("menus")
+
+}
+model UserAssignRights{
+    id Int @id @default(autoincrement())
+    user_id String
+    menu_id String
+
+  @@map("user_assign_rights")
+
+}
