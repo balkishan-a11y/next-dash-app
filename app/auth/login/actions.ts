@@ -51,7 +51,6 @@ export async function canAccess(userId: string, path: string) {
   const menu = await prisma.menu.findFirst({
     where: {
       path: path,
-      status: '1',
     },
   });
   if (!menu) {

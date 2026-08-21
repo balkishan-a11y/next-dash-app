@@ -7,6 +7,7 @@ export async function proxy(request: NextRequest) {
     const dbPath = pathname.replace('/dashboard', '');
     const session = request.cookies.get('session');
 
+    console.log(dbPath);
     const userId = session?.value;
     if (!userId) {
         return NextResponse.redirect(new URL('/auth/login', request.url));

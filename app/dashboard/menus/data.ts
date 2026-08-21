@@ -55,9 +55,6 @@ export async function fetchMenuById(id: number) {
 export async function fetchMenus() {
   try {
     const data = await prisma.menu.findMany({
-      where: {
-        status: '1',
-      },
       select: {
         id: true,
         name: true,

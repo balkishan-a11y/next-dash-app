@@ -81,7 +81,7 @@ export async function updateMenu(id: string, formData: FormData) {
     }
     await prisma.menu.update({
       where: {
-        id: id,
+        id: Number(id),
       },
       data: savedata,
     });

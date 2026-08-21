@@ -23,14 +23,11 @@ export default function Rights({ userlist, menus }) {
         const menu_list = await fetchMenus();
 
         Object.values(menu_list).forEach((menu) => {
-            if (menu_ids.includes(String(menu.id))) {
-                newCheckedMenus[menu.id] = true;
-            }
-            menu.sub_menu.forEach((subMenu) => {
-                if (menu_ids.includes(String(subMenu.id))) {
-                    newCheckedSubMenus[String(subMenu.id)] = true;
-                }
+            newCheckedMenus[menu.id] = menuIds.includes(String(menu.id));
 
+            menu.sub_menu.forEach((subMenu) => {
+                newCheckedSubMenus[subMenu.id] =
+                    menuIds.includes(String(subMenu.id));
             });
 
         });

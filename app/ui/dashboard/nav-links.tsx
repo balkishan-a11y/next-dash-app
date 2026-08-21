@@ -21,6 +21,7 @@ export default async function NavLinks() {
       id: {
         in: menu_ids,
       },
+      status: "1"
     },
   });
   // console.log(menu_ids);
