@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Customer {
+  id        String @id @default(uuid())
+  name      String
+  email     String
+  image_url String
+
+  @@map("customers")
+}
+
+model Invoice {
+  id          String   @id @default(uuid())
+  customer_id String
+  amount      Int
+  status      String
+  date        DateTime
+
+  @@map("invoices")
+}
+
+model Revenue {
+  month   String @id @unique
+  revenue Int
+
+  @@map("revenue")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  role      Role     @default(USER)
+  updatedAt DateTime @updatedAt
+  username  String?
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  EMPLOYEE
+  ADMIN
+  MANAGER
+}
+
+model Menu{
+  id Int @id @default(autoincrement())
+  name String
+  path String
+  icon String
+  parent_menu String
+  status String @default("1") // 1 => Active, 0 => Inactive
+  type String @default("1") // 1=>menu, 2=>sub_menu
+  @@map("menus")
+
+}
+model UserAssignRights{
+    id Int @id @default(autoincrement())
+    user_id String
+    menu_id String
+
+  @@map("user_assign_rights")
+
+}
